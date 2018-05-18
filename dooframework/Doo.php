@@ -1,4 +1,25 @@
 <?php
+
+namespace Doo;
+
+use Doo\App\DooConfig;
+use Doo\DB\DooSqlMagic;
+use Doo\DB\DooMasterSlave;
+use Doo\Session\DooSession;
+use Doo\Session\DooCacheSession;
+use Doo\App\DooWebApp as DooWebApp;
+use Doo\Auth\DooAcl;
+use Doo\Translate\DooTranslator;
+use Doo\Logging\DooLog;
+use Doo\Cache\DooFileCache;
+
+use Doo\Cache\DooPhpCache;
+use Doo\Cache\DooFrontCache;
+use Doo\Cache\DooApcCache;
+use Doo\Cache\DooXCache;
+use Doo\Cache\DooEAcceleratorCache;
+use Doo\Cache\DooMemCache;
+
 /**
  * Doo class file.
  *
@@ -67,7 +88,8 @@ class Doo{
      * @return mixed returns NULL by default. If $createObj is TRUE, it creates and return the Object(s) of the class name passed in.
      */
     public static function loadModelFromApp($modelName, $appName='default', $createObj=false){
-        return self::load($modelName, self::$_globalApps[$appName] . 'model/', $createObj);
+		$class = $_globalApps[$appName];
+        return self::load($modelName, self::$class . 'model/', $createObj);
     }
     
     /**
@@ -78,7 +100,8 @@ class Doo{
      * @return mixed returns NULL by default. If $createObj is TRUE, it creates and return the Object(s) of the class name passed in.
      */
     public static function loadClassFromApp($className, $appName='default', $createObj=false){
-        return self::load($className, self::$_globalApps[$appName] . 'class/', $createObj);
+		$class = $_globalApps[$appName];
+        return self::load($className, self::$class . 'class/', $createObj);
     }
     
     /**
@@ -86,7 +109,8 @@ class Doo{
      * @param string $class_name Name of the class to be imported
      */
     public static function loadControllerFromApp($controllerName, $appName='default'){
-        return self::load($controllerName, self::$_globalApps[$appName] . 'controller/');
+		$class = $_globalApps[$appName];
+        return self::load($controllerName, self::$class . 'controller/');
     }
 
     /**
@@ -95,8 +119,8 @@ class Doo{
      */
     public static function app($appType='DooWebApp'){
         if(self::$_app===NULL){
-            self::loadCore('app/' . $appType);
-            self::$_app = new $appType();
+			$class = "\\Doo\\App\\" . $appType;
+            self::$_app = new $class;
         }
         return self::$_app;
     }
@@ -107,7 +131,7 @@ class Doo{
      */
     public static function acl($class = 'DooAcl'){
         if(self::$_acl===NULL){
-            self::loadCore('auth/' . $class);
+			$class = "\\Doo\\Auth\\" . $class;
             self::$_acl = new $class;
         }
         return self::$_acl;
@@ -126,10 +150,8 @@ class Doo{
     public static function db(){
         if(self::$_db===NULL){
             if(self::$_useDbReplicate===NULL){
-                self::loadCore('db/DooSqlMagic');
                 self::$_db = new DooSqlMagic;
             }else{
-                self::loadCore('db/DooMasterSlave');
                 self::$_db = new DooMasterSlave;
             }
         }
@@ -145,7 +167,6 @@ class Doo{
      */
     public static function session($namespace = null){
         if(self::$_session===NULL){
-            self::loadCore('session/DooSession');
             self::$_session = new DooSession($namespace);
         }
         return self::$_session;
@@ -156,7 +177,6 @@ class Doo{
      */
     public static function cacheSession($prefix = 'dooSession/', $type='file'){
 		$cache = self::cache($type);
-		self::loadCore('session/DooCacheSession');
 		return DooCacheSession::installOnCache($cache, $prefix);
     }
 
@@ -165,7 +185,6 @@ class Doo{
 	  */
     public static function translator($adapter, $data, $options=array()) {
         if(self::$_translator===NULL){
-            self::loadCore('translate/DooTranslator');
             self::$_translator = new DooTranslator($adapter, $data, $options);
         }
         return self::$_translator;
@@ -184,7 +203,6 @@ class Doo{
      */
     public static function logger(){
         if(self::$_logger===NULL){
-            self::loadCore('logging/DooLog');
             self::$_logger = new DooLog(self::conf()->DEBUG_ENABLED);
         }
         return self::$_logger;
@@ -199,7 +217,6 @@ class Doo{
             if(isset(self::$_cache['file']))
                 return self::$_cache['file'];
 
-            self::loadCore('cache/DooFileCache');
             self::$_cache['file'] = new DooFileCache;
             return self::$_cache['file'];
         }
@@ -207,7 +224,6 @@ class Doo{
             if(isset(self::$_cache['php']))
                 return self::$_cache['php'];
 
-            self::loadCore('cache/DooPhpCache');
             self::$_cache['php'] = new DooPhpCache;
             return self::$_cache['php'];
         }
@@ -215,7 +231,6 @@ class Doo{
             if(isset(self::$_cache['front']))
                 return self::$_cache['front'];
 
-            self::loadCore('cache/DooFrontCache');
             self::$_cache['front'] = new DooFrontCache;
             return self::$_cache['front'];
         }
@@ -223,7 +238,6 @@ class Doo{
             if(isset(self::$_cache['apc']))
                 return self::$_cache['apc'];
 
-            self::loadCore('cache/DooApcCache');
             self::$_cache['apc'] = new DooApcCache;
             return self::$_cache['apc'];
         }
@@ -231,7 +245,6 @@ class Doo{
             if(isset(self::$_cache['xcache']))
                 return self::$_cache['xcache'];
 
-            self::loadCore('cache/DooXCache');
             self::$_cache['xcache'] = new DooXCache;
             return self::$_cache['xcache'];
         }
@@ -239,7 +252,6 @@ class Doo{
             if(isset(self::$_cache['eaccelerator']))
                 return self::$_cache['eaccelerator'];
 
-            self::loadCore('cache/DooEAcceleratorCache');
             self::$_cache['eaccelerator'] = new DooEAcceleratorCache;
             return self::$_cache['eaccelerator'];
         }
@@ -247,7 +259,6 @@ class Doo{
             if(isset(self::$_cache['memcache']))
                 return self::$_cache['memcache'];
 
-            self::loadCore('cache/DooMemCache');
             self::$_cache['memcache'] = new DooMemCache(Doo::conf()->MEMCACHE);
             return self::$_cache['memcache'];
         }
