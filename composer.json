@@ -16,6 +16,9 @@
         "php": ">=5.6.0"
     },
     "autoload": {
+        "files": [
+            "dooframework/Helper/helpers.php",
+        ],
         "psr-4": {
             "Doo\\": "dooframework/"
         }
