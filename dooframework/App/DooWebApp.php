@@ -4,6 +4,7 @@ namespace Doo\App;
 
 use Doo\Doo;
 use Doo\URI\DooUriRouter;
+use Doo\Controller\DooController;
 
 /**
  * DooWebApp class file.
@@ -52,7 +53,6 @@ class DooWebApp{
 
         if($routeRs[0]!==null && $routeRs[1]!==null){
             //dispatch, call Controller class
-            require_once Doo::conf()->BASE_PATH ."controller/DooController.php";
             
             if($routeRs[0][0]!=='['){
                 if(strpos($routeRs[0], '\\')!==false){
