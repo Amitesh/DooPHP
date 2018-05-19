@@ -17,7 +17,7 @@
     },
     "autoload": {
         "files": [
-            "dooframework/Helper/helpers.php",
+            "dooframework/Helper/helpers.php"
         ],
         "psr-4": {
             "Doo\\": "dooframework/"
