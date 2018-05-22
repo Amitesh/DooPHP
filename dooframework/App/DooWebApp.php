@@ -55,14 +55,7 @@ class DooWebApp{
             //dispatch, call Controller class
             
             if($routeRs[0][0]!=='['){
-                if(strpos($routeRs[0], '\\')!==false){
-                    $nsClassFile = str_replace('\\','/',$routeRs[0]);
-                    $nsClassFile = explode(Doo::conf()->APP_NAMESPACE_ID.'/', $nsClassFile, 2);
-                    $nsClassFile = $nsClassFile[1];
-                    require_once Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . $nsClassFile .'.php';                    
-                }else{
-                    require_once Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . "controller/{$routeRs[0]}.php";
-                }
+
             }else{
                 $moduleParts = explode(']', $routeRs[0]);
                 $moduleName = substr($moduleParts[0],1);
@@ -87,9 +80,9 @@ class DooWebApp{
             //if defined class name, use the class name to create the Controller object
             $clsnameDefined = (sizeof($routeRs)===4);
             if($clsnameDefined)
-				$cname = "\\".$routeRs[3];
+				$cname = $routeRs[3];
             else
-				$cname = "\\".$routeRs[0];
+				$cname = $routeRs[0];
 
             $controller = new $cname;
             $controller->params = $routeRs[2];
