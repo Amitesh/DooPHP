@@ -355,7 +355,7 @@ class Doo{
         }else{
             $moduleFolder = Doo::getAppPath() . 'module/' . $moduleFolder;            
         }
-        return self::load($class_name, $moduleFolder . "/model/", $createObj);
+        return self::load($class_name, $moduleFolder . "/Model/", $createObj);
     }
 
     /**
@@ -370,7 +370,7 @@ class Doo{
         }else{
             $moduleFolder = Doo::getAppPath() . 'module/' . $moduleFolder;            
         }        
-		require_once $moduleFolder . '/controller/'.$class_name.'.php';
+		require_once $moduleFolder . '/Controller/'.$class_name.'.php';
     }
 
     /**
@@ -412,75 +412,75 @@ class Doo{
 //        if( class_exists($classname, false) === true )
 //			return;
         
-        //app
-		$class['DooConfig']      = 'app/DooConfig';
-		$class['DooSiteMagic']   = 'app/DooSiteMagic';
-		$class['DooWebApp']      = 'app/DooWebApp';
+        //App
+		$class['DooConfig']      = 'App/DooConfig';
+		$class['DooSiteMagic']   = 'App/DooSiteMagic';
+		$class['DooWebApp']      = 'App/DooWebApp';
         
-        //auth
-		$class['DooAcl']         = 'auth/DooAcl';
-		$class['DooAuth']        = 'auth/DooAuth';
-		$class['DooDigestAuth']  = 'auth/DooDigestAuth';
-		$class['DooRbAcl']       = 'auth/DooRbAcl';    
+        //Auth
+		$class['DooAcl']         = 'Auth/DooAcl';
+		$class['DooAuth']        = 'Auth/DooAuth';
+		$class['DooDigestAuth']  = 'Auth/DooDigestAuth';
+		$class['DooRbAcl']       = 'Auth/DooRbAcl';    
         
-        //cache
-		$class['DooApcCache']            = 'cache/DooApcCache';
-		$class['DooEAcceleratorCache']   = 'cache/DooEAcceleratorCache';
-		$class['DooFileCache']           = 'cache/DooFileCache';
-		$class['DooFrontCache']          = 'cache/DooFrontCache';
-		$class['DooMemCache']            = 'cache/DooMemCache';
-		$class['DooPhpCache']            = 'cache/DooPhpCache';
-		$class['DooXCache']              = 'cache/DooXCache';
+        //Cache
+		$class['DooApcCache']            = 'Cache/DooApcCache';
+		$class['DooEAcceleratorCache']   = 'Cache/DooEAcceleratorCache';
+		$class['DooFileCache']           = 'Cache/DooFileCache';
+		$class['DooFrontCache']          = 'Cache/DooFrontCache';
+		$class['DooMemCache']            = 'Cache/DooMemCache';
+		$class['DooPhpCache']            = 'Cache/DooPhpCache';
+		$class['DooXCache']              = 'Cache/DooXCache';
             
         //controller
-		$class['DooController'] = 'controller/DooController';
+		$class['DooController'] = 'Controller/DooController';
         
-        //db
-		$class['DooDbExpression']    = 'db/DooDbExpression';
-		$class['DooMasterSlave']     = 'db/DooMasterSlave';
-		$class['DooModel']           = 'db/DooModel';
-		$class['DooModelGen']        = 'db/DooModelGen';
-		$class['DooSmartModel']      = 'db/DooSmartModel';
-		$class['DooSqlMagic']        = 'db/DooSqlMagic';
+        //DB
+		$class['DooDbExpression']    = 'DB/DooDbExpression';
+		$class['DooMasterSlave']     = 'DB/DooMasterSlave';
+		$class['DooModel']           = 'DB/DooModel';
+		$class['DooModelGen']        = 'DB/DooModelGen';
+		$class['DooSmartModel']      = 'DB/DooSmartModel';
+		$class['DooSqlMagic']        = 'DB/DooSqlMagic';
         
-        //db/manage
-		$class['DooDbUpdater']       = 'db/manage/DooDbUpdater';
-		$class['DooManageDb']        = 'db/manage/DooManageDb';
-		$class['DooManageMySqlDb']   = 'db/manage/adapters/DooManageMySqlDb';
-		$class['DooManagePgSqlDb']   = 'db/manage/adapters/DooManagePgSqlDb';
-		$class['DooManageSqliteDb']  = 'db/manage/adapters/DooManageSqliteDb';
+        //DB/manage
+		$class['DooDbUpdater']       = 'DB/manage/DooDbUpdater';
+		$class['DooManageDb']        = 'DB/manage/DooManageDb';
+		$class['DooManageMySqlDb']   = 'DB/manage/adapters/DooManageMySqlDb';
+		$class['DooManagePgSqlDb']   = 'DB/manage/adapters/DooManagePgSqlDb';
+		$class['DooManageSqliteDb']  = 'DB/manage/adapters/DooManageSqliteDb';
         
-        //helper
-		$class['DooBenchmark']       = 'helper/DooBenchmark';
-		$class['DooFile']            = 'helper/DooFile';
-		$class['DooFlashMessenger']  = 'helper/DooFlashMessenger';
-		$class['DooForm']            = 'helper/DooForm';
-		$class['DooGdImage']         = 'helper/DooGdImage';
-		$class['DooMailer']          = 'helper/DooMailer';
-		$class['DooPager']           = 'helper/DooPager';
-		$class['DooRestClient']      = 'helper/DooRestClient';
-		$class['DooTextHelper']      = 'helper/DooTextHelper';
-		$class['DooTimezone']        = 'helper/DooTimezone';
-		$class['DooUrlBuilder']      = 'helper/DooUrlBuilder';
-		$class['DooValidator']       = 'helper/DooValidator';
+        //Helper
+		$class['DooBenchmark']       = 'Helper/DooBenchmark';
+		$class['DooFile']            = 'Helper/DooFile';
+		$class['DooFlashMessenger']  = 'Helper/DooFlashMessenger';
+		$class['DooForm']            = 'Helper/DooForm';
+		$class['DooGdImage']         = 'Helper/DooGdImage';
+		$class['DooMailer']          = 'Helper/DooMailer';
+		$class['DooPager']           = 'Helper/DooPager';
+		$class['DooRestClient']      = 'Helper/DooRestClient';
+		$class['DooTextHelper']      = 'Helper/DooTextHelper';
+		$class['DooTimezone']        = 'Helper/DooTimezone';
+		$class['DooUrlBuilder']      = 'Helper/DooUrlBuilder';
+		$class['DooValidator']       = 'Helper/DooValidator';
         
         //logging
-		$class['DooLog'] = 'logging/DooLog';
+		$class['DooLog'] = 'Logging/DooLog';
         
         //session
-		$class['DooCacheSession'] = 'session/DooCacheSession';
-		$class['DooSession']      = 'session/DooSession';      
+		$class['DooCacheSession'] = 'Session/DooCacheSession';
+		$class['DooSession']      = 'Session/DooSession';      
         
         //translate
-		$class['DooTranslator'] = 'translate/DooTranslator';
+		$class['DooTranslator'] = 'Translate/DooTranslator';
         
         //uri
-		$class['DooLoader'] = 'uri/DooLoader';
-		$class['DooUriRouter'] = 'uri/DooUriRouter';
+		$class['DooLoader'] = 'URI/DooLoader';
+		$class['DooUriRouter'] = 'URI/DooUriRouter';
         
         //view
-		$class['DooView'] = 'uri/DooView';
-		$class['DooViewBasic'] = 'uri/DooViewBasic';
+		$class['DooView'] = 'View/DooView';
+		$class['DooViewBasic'] = 'View/DooViewBasic';
         
         if(isset($class[$classname]))
             self::loadCore($class[$classname]);
