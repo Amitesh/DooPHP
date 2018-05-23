@@ -3,6 +3,7 @@
 namespace Doo\Logging;
 
 use Doo\Doo;
+use Doo\Helper\DooFile;
 
 /**
  * DooLog class file.
@@ -436,7 +437,6 @@ class DooLog{
                     $mode = 'w+';
                 }
             }
-			Doo::loadHelper('DooFile');
 			$file = new DooFile(0777);
 			$file->create($filename, $data, $mode);
         }

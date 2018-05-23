@@ -54,7 +54,8 @@ class Doo{
 	protected static $_session;
 	protected static $_translator;
     protected static $_globalApps;
-    protected static $_autoloadClassMap;
+    protected static $_autoloadClassMap;    
+    protected static $_dbs = array();
 
     /**
      * @return DooConfig configuration settings defined in <i>common.conf.php</i>, auto create if the singleton has not been created yet.
@@ -144,22 +145,19 @@ class Doo{
         self::$_useDbReplicate = true;
     }
 
-    /**
-     * @return DooSqlMagic the database singleton, auto create if the singleton has not been created yet.
-     */
-    public static function db(){
-        if(self::$_db===NULL){
+       
+    //copy from Doo.php, and modified it
+    public static function db($dbname='APP'){       
+        if(!array_key_exists($dbname,self::$_dbs) || self::$_dbs[$dbname]===NULL){
             if(self::$_useDbReplicate===NULL){
-                self::$_db = new DooSqlMagic;
+                self::$_dbs[$dbname] = new DooSqlMagic;
             }else{
                 self::$_db = new DooMasterSlave;
             }
         }
-
-        if(!self::$_db->connected)
-            self::$_db->connect();
-
-        return self::$_db;
+        if(!self::$_dbs[$dbname]->connected)
+            self::$_dbs[$dbname]->connect();
+        return self::$_dbs[$dbname];
     }
 
     /**
@@ -310,7 +308,7 @@ class Doo{
      * @param string $class_name Name of the class to be imported
      */
     public static function loadController($class_name){
-		return self::load($class_name, self::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . 'controller/', false);
+		return self::load($class_name, self::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . 'Controller/', false);
     }
 
     /**
@@ -320,7 +318,7 @@ class Doo{
      * @return mixed returns NULL by default. If $createObj is TRUE, it creates and return the Object(s) of the class name passed in.
      */
     public static function loadModel($class_name, $createObj=FALSE){
-        return self::load($class_name, self::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . 'model/', $createObj);
+        return self::load($class_name, self::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . 'Model/', $createObj);
     }
 
     /**
@@ -330,7 +328,8 @@ class Doo{
      * @return mixed returns NULL by default. If $createObj is TRUE, it creates and return the Object(s) of the class name passed in.
      */
     public static function loadHelper($class_name, $createObj=FALSE){
-        return self::load($class_name, self::conf()->BASE_PATH ."helper/", $createObj);
+		//$class_name = "\\Doo\\Helper\\" . $class_name;
+        //return self::load($class_name, self::conf()->BASE_PATH ."helper/", $createObj);
     }
 
     /**
@@ -339,7 +338,7 @@ class Doo{
      * @param string $class_name Name of the class to be imported
      */
     public static function loadCore($class_name){
-        require_once self::conf()->BASE_PATH ."$class_name.php";
+        //require_once self::conf()->BASE_PATH ."$class_name.php";
     }
 
     /**
@@ -578,5 +577,22 @@ class Doo{
 
     public static function version(){
         return '1.4.1';
+    }
+    
+    public static function setSqlTracking($enabled = false){
+        foreach(self::$_dbs as $key => $obj) {
+             $obj->sql_tracking = $enabled;
+        }   
+    }
+    
+    public static function sql2log() {
+        foreach(self::$_dbs as $key => $obj) {
+            $sqlList = $obj->showSQL();
+            if (is_array($sqlList)) {
+                foreach($sqlList as $sql) {
+                    \Doo\Doo::logger()->log($sql, DooLog::PROFILE, 'SQL');
+                }
+            }
+        }      
     }
 }

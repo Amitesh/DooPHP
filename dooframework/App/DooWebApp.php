@@ -55,7 +55,14 @@ class DooWebApp{
             //dispatch, call Controller class
             
             if($routeRs[0][0]!=='['){
-
+                if(strpos($routeRs[0], '\\')!==false){
+                    $nsClassFile = str_replace('\\','/',$routeRs[0]);
+                    $nsClassFile = explode(Doo::conf()->APP_NAMESPACE_ID.'/', $nsClassFile, 2);
+                    $nsClassFile = $nsClassFile[1];
+                    require_once Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . $nsClassFile .'.php';                    
+                }else{
+                    require_once Doo::conf()->SITE_PATH . Doo::conf()->PROTECTED_FOLDER . "controller/{$routeRs[0]}.php";
+                }
             }else{
                 $moduleParts = explode(']', $routeRs[0]);
                 $moduleName = substr($moduleParts[0],1);
