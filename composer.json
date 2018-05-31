@@ -19,6 +19,9 @@
         "files": [
             "dooframework/Helper/helpers.php"
         ],
+        "classmap": [
+            "dooframework/Doo.php"
+        ],
         "psr-4": {
             "Doo\\": "dooframework/"
         }
